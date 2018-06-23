@@ -63,9 +63,6 @@ public class TelaFormPaciente extends javax.swing.JFrame {
         jTextFieldComplemento = new javax.swing.JTextField();
         jLabelBairro = new javax.swing.JLabel();
         jComboBoxBairro = new javax.swing.JComboBox<>();
-        jPanelTabela = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTablePacientes = new javax.swing.JTable();
         jButtonNovo = new javax.swing.JButton();
         jButtonSalvar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
@@ -75,6 +72,9 @@ public class TelaFormPaciente extends javax.swing.JFrame {
         jTextFieldPesquisa = new javax.swing.JTextField();
         jButtonBuscar = new javax.swing.JButton();
         jButtonAtualizar = new javax.swing.JButton();
+        jPanelTabela = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTablePacientes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -219,38 +219,6 @@ public class TelaFormPaciente extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jPanelTabela.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jTablePacientes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane2.setViewportView(jTablePacientes);
-
-        javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
-        jPanelTabela.setLayout(jPanelTabelaLayout);
-        jPanelTabelaLayout.setHorizontalGroup(
-            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTabelaLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanelTabelaLayout.setVerticalGroup(
-            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanelTabelaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         jButtonNovo.setText("Novo");
         jButtonNovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -305,6 +273,38 @@ public class TelaFormPaciente extends javax.swing.JFrame {
                 jButtonAtualizarActionPerformed(evt);
             }
         });
+
+        jPanelTabela.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jTablePacientes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(jTablePacientes);
+
+        javax.swing.GroupLayout jPanelTabelaLayout = new javax.swing.GroupLayout(jPanelTabela);
+        jPanelTabela.setLayout(jPanelTabelaLayout);
+        jPanelTabelaLayout.setHorizontalGroup(
+            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTabelaLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 794, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanelTabelaLayout.setVerticalGroup(
+            jPanelTabelaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelTabelaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

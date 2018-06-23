@@ -129,16 +129,16 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jPanelInternal.add(jButtonCadAgenda);
         jButtonCadAgenda.setBounds(240, 300, 130, 130);
 
-        jLabelAgenda.setText("Agenda");
+        jLabelAgenda.setText("Agendamentos");
 
         javax.swing.GroupLayout jPanelAgendaLayout = new javax.swing.GroupLayout(jPanelAgenda);
         jPanelAgenda.setLayout(jPanelAgendaLayout);
         jPanelAgendaLayout.setHorizontalGroup(
             jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelAgendaLayout.createSequentialGroup()
-                .addContainerGap(191, Short.MAX_VALUE)
-                .addComponent(jLabelAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(184, 184, 184))
+                .addContainerGap(177, Short.MAX_VALUE)
+                .addComponent(jLabelAgenda, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(168, 168, 168))
         );
         jPanelAgendaLayout.setVerticalGroup(
             jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

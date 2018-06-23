@@ -5,17 +5,45 @@
  */
 package view;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import modeloBeans.BeansAgenda;
+import modeloBeans.ModeloTabela;
+import modeloConnection.ConexaoBD;
+import modeloDao.DaoAgenda;
+
 /**
  *
  * @author Mau
  */
 public class TelaFormAgenda extends javax.swing.JFrame {
 
-    /**
-     * Creates new form TelaFormAgenda
-     */
+    ConexaoBD connect = new ConexaoBD();
+    BeansAgenda mod = new BeansAgenda();
+    
     public TelaFormAgenda() {
         initComponents();
+        preencherMedicos();
+    }
+    
+    public void preencherMedicos(){
+        connect.conectarBD();
+        connect.executarSql("SELECT * FROM medicos ORDER BY nome_medico");
+        try {
+            connect.rs.first();
+            jComboBoxMedico.removeAllItems();
+            do{
+                jComboBoxMedico.addItem(connect.rs.getString("nome_medico"));
+            } while(connect.rs.next());
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Não existem médicos cadastrados!");
+        }
+        connect.desconectarBD();
     }
 
     /**
@@ -28,7 +56,7 @@ public class TelaFormAgenda extends javax.swing.JFrame {
         jPanelAgenda = new javax.swing.JPanel();
         jLabelPaciente = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTablePaciente = new javax.swing.JTable();
+        jTablePacientes = new javax.swing.JTable();
         jLabelTurno = new javax.swing.JLabel();
         jComboBoxTurno = new javax.swing.JComboBox<>();
         jButtonBuscar = new javax.swing.JButton();
@@ -41,7 +69,7 @@ public class TelaFormAgenda extends javax.swing.JFrame {
         jTextAreaMotivo = new javax.swing.JTextArea();
         jButtonSalvar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        jDateChooserData = new com.toedter.calendar.JDateChooser();
         jLabelTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -50,8 +78,8 @@ public class TelaFormAgenda extends javax.swing.JFrame {
 
         jLabelPaciente.setText("Paciente:");
 
-        jTablePaciente.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jTablePaciente.setModel(new javax.swing.table.DefaultTableModel(
+        jTablePacientes.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jTablePacientes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -62,11 +90,17 @@ public class TelaFormAgenda extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(jTablePaciente);
+        jTablePacientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePacientesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTablePacientes);
 
         jLabelTurno.setText("Turno:");
 
         jComboBoxTurno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matutino", "Diurno", "Noturno" }));
+        jComboBoxTurno.setEnabled(false);
 
         jButtonBuscar.setText("Buscar");
         jButtonBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -77,17 +111,33 @@ public class TelaFormAgenda extends javax.swing.JFrame {
 
         jLabelMedico.setText("Médico:");
 
+        jComboBoxMedico.setEnabled(false);
+
         jLabelData.setText("Data:");
 
         jLabelMotivo.setText("Motivo:");
 
         jTextAreaMotivo.setColumns(20);
         jTextAreaMotivo.setRows(5);
+        jTextAreaMotivo.setEnabled(false);
         jScrollPane2.setViewportView(jTextAreaMotivo);
 
         jButtonSalvar.setText("Finalizar Agendamento");
+        jButtonSalvar.setEnabled(false);
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
 
         jButtonCancelar.setText("Cancelar Agendamento");
+        jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCancelarActionPerformed(evt);
+            }
+        });
+
+        jDateChooserData.setEnabled(false);
 
         javax.swing.GroupLayout jPanelAgendaLayout = new javax.swing.GroupLayout(jPanelAgenda);
         jPanelAgenda.setLayout(jPanelAgendaLayout);
@@ -118,7 +168,7 @@ public class TelaFormAgenda extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jDateChooserData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(jPanelAgendaLayout.createSequentialGroup()
                             .addComponent(jLabelPaciente)
@@ -148,11 +198,12 @@ public class TelaFormAgenda extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25)
-                .addGroup(jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jDateChooserData, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelData, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanelAgendaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelAgendaLayout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -200,11 +251,76 @@ public class TelaFormAgenda extends javax.swing.JFrame {
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
+        preencherTabela("SELECT paci_codigo, paci_nome, paci_rg, paci_telefone FROM public.pacientes WHERE paci_nome ILIKE '%"+jTextFieldPaciente.getText()+"%'");
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jTablePacientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePacientesMouseClicked
+        // TODO add your handling code here:
+        String codigo_paciente = ""+jTablePacientes.getValueAt(jTablePacientes.getSelectedRow(), 0);
+        connect.conectarBD();
+        connect.executarSql("SELECT * FROM public.pacientes WHERE paci_codigo='"+codigo_paciente+"'");
+        try {
+            connect.rs.first();
+            jTextFieldPaciente.setText(connect.rs.getString("paci_nome"));
+            jComboBoxTurno.setEnabled(true);
+            jComboBoxMedico.setEnabled(true);
+            jDateChooserData.setEnabled(true);
+            jTextAreaMotivo.setEnabled(true);
+            jButtonSalvar.setEnabled(true);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(rootPane, "Erro ao buscar paciente no banco de dados!"+ex.getMessage());
+        }
+        connect.desconectarBD();
+    }//GEN-LAST:event_jTablePacientesMouseClicked
+
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        // TODO add your handling code here:
+        mod.setNome_paciente(jTextFieldPaciente.getText());
+        mod.setTurno((String) jComboBoxTurno.getSelectedItem());
+        mod.setNome_medico((String) jComboBoxMedico.getSelectedItem());
+        mod.setData(jDateChooserData.getDate());
+        mod.setMotivo(jTextAreaMotivo.getText());
+        mod.setStatus("Aberto");
+        DaoAgenda control = new DaoAgenda();
+        control.Salvar(mod);
+        
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        dispose();
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    public void preencherTabela(String Sql){
+        ArrayList dados = new ArrayList();
+        String[] colunas = new String[] {"ID", "Paciente", "RG", "Telefone"};
+        connect.conectarBD();
+        connect.executarSql(Sql);
+        try {
+            connect.rs.first();
+                do{
+                    dados.add(new Object[] {connect.rs.getInt("paci_codigo"), connect.rs.getString("paci_nome"), connect.rs.getString("paci_rg"), connect.rs.getString("paci_telefone")});
+                }while(connect.rs.next());
+        } catch (SQLException ex) {
+            //JOptionPane.showMessageDialog(null, "Ocorreu um erro ao listar registros do banco de dados: "+ex.getMessage());
+        }
+        ModeloTabela modelo = new ModeloTabela(dados, colunas);
+        jTablePacientes .setModel(modelo);
+        jTablePacientes.getColumnModel().getColumn(0).setPreferredWidth(23);
+        jTablePacientes.getColumnModel().getColumn(0).setResizable(false);
+        jTablePacientes.getColumnModel().getColumn(1).setPreferredWidth(180);
+        jTablePacientes.getColumnModel().getColumn(1).setResizable(false);
+        jTablePacientes.getColumnModel().getColumn(2).setPreferredWidth(80);
+        jTablePacientes.getColumnModel().getColumn(2).setResizable(false);
+        jTablePacientes.getColumnModel().getColumn(3).setPreferredWidth(80);
+        jTablePacientes.getColumnModel().getColumn(3).setResizable(false);
+        jTablePacientes.getTableHeader().setReorderingAllowed(false);
+        jTablePacientes.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTablePacientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        
+        connect.desconectarBD();
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -243,7 +359,7 @@ public class TelaFormAgenda extends javax.swing.JFrame {
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JComboBox<String> jComboBoxMedico;
     private javax.swing.JComboBox<String> jComboBoxTurno;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser jDateChooserData;
     private javax.swing.JLabel jLabelData;
     private javax.swing.JLabel jLabelMedico;
     private javax.swing.JLabel jLabelMotivo;
@@ -253,7 +369,7 @@ public class TelaFormAgenda extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelAgenda;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTablePaciente;
+    private javax.swing.JTable jTablePacientes;
     private javax.swing.JTextArea jTextAreaMotivo;
     private javax.swing.JTextField jTextFieldPaciente;
     // End of variables declaration//GEN-END:variables
