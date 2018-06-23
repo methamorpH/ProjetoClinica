@@ -318,6 +318,7 @@ public class TelaFormMedico extends javax.swing.JFrame {
         jButtonPesquisar.setEnabled(true);
         jButtonAtualizar.setEnabled(true);
         jTextFieldBuscarMedico.setEnabled(true);
+        jButtonNovo.setEnabled(true);
         preencherTabela("SELECT * FROM public.medicos ORDER BY nome_medico");
         }else{
         mod.setNome(jTextFieldNome.getText());

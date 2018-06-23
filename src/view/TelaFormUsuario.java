@@ -379,11 +379,18 @@ public class TelaFormUsuario extends javax.swing.JFrame {
             jTextFieldUsuario.setText("");
             jPasswordFieldSenha.setText("");
             jPasswordFieldConfirmarSenha.setText("");
+            jTextFieldPesquisar.setText("");
             jComboBoxTipo.setEnabled(false);
             jTextFieldUsuario.setEnabled(false);
+            jPasswordFieldSenha.setEnabled(false);
+            jPasswordFieldConfirmarSenha.setEnabled(false);
             jComboBoxTipo.setEnabled(false);
             jButtonSalvar.setEnabled(false);
             jButtonCancelar.setEnabled(false);
+            jButtonNovo.setEnabled(true);
+            jButtonPesquisar.setEnabled(true);
+            jTextFieldPesquisar.setEnabled(true);
+            jButtonAtualizar.setEnabled(true);
             preencherTabela("SELECT * FROM public.usuarios ORDER BY usu_nome");
         }else{
             mod.setNome(jTextFieldUsuario.getText());
@@ -403,7 +410,9 @@ public class TelaFormUsuario extends javax.swing.JFrame {
             jButtonSalvar.setEnabled(false);
             jButtonCancelar.setEnabled(false);
             jButtonNovo.setEnabled(true);
+            jTextFieldPesquisar.setEnabled(true);
             jButtonPesquisar.setEnabled(true);
+            jButtonAtualizar.setEnabled(true);
             preencherTabela("SELECT * FROM public.usuarios ORDER BY usu_nome");
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed

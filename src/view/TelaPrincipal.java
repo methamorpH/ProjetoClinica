@@ -19,6 +19,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
     TelaFormMedico telaMedico = new TelaFormMedico();
     TelaFormUsuario telaUsuario = new TelaFormUsuario();
     TelaFormPaciente telaPaciente = new TelaFormPaciente();
+    TelaFormAgenda telaAgenda = new TelaFormAgenda();
     
     public TelaPrincipal(String usuario) {
         initComponents();
@@ -307,6 +308,14 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void jButtonCadAgendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCadAgendaActionPerformed
         // TODO add your handling code here:
+        if(telaAgenda == null){
+            telaAgenda = new TelaFormAgenda();
+            telaAgenda.setVisible(true);
+            telaAgenda.setResizable(false);   
+        } else {
+            telaAgenda.setVisible(true);
+            telaAgenda.setResizable(false);
+        }
     }//GEN-LAST:event_jButtonCadAgendaActionPerformed
 
     private void jMenuSairMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuSairMouseClicked
