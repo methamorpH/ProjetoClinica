@@ -329,7 +329,7 @@ COPY public.pacientes (paci_codigo, paci_nome, paci_rg, paci_telefone, paci_rua,
 --
 
 COPY public.usuarios (usu_codigo, usu_nome, usu_senha, usu_tipo) FROM stdin;
-1	admin	123	123
+1	admin	123	Administrador
 \.
 
 

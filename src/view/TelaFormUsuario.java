@@ -532,7 +532,7 @@ public class TelaFormUsuario extends javax.swing.JFrame {
         ArrayList dados = new ArrayList();
         String[] colunas = new String[] {"ID", "Usuário", "Tipo"};
         connect.conectarBD();
-        connect.executarSql(Sql);
+        connect.executarSql("SELECT * FROM public.usuarios");
         try {
             connect.rs.first();
                 do{
