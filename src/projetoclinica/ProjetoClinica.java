@@ -5,6 +5,8 @@
  */
 package projetoclinica;
 
+import view.TelaLogin;
+
 /**
  *
  * @author Mau
@@ -16,6 +18,9 @@ public class ProjetoClinica {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        TelaLogin telaLogin = new TelaLogin();
+        telaLogin.setVisible(true);
+        telaLogin.setResizable(false);
     }
     
 }
